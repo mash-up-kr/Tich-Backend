@@ -28,5 +28,15 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'com.h2database:h2'
+
+    implementation('org.springframework.boot:spring-boot-starter-data-mongodb')
+    runtimeOnly 'mysql:mysql-connector-java'
+
     testImplementation('org.springframework.boot:spring-boot-starter-test')
 }
