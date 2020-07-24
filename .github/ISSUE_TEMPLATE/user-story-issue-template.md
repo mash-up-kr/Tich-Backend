@@ -7,7 +7,7 @@ assignees: vo0a, YJeongKim
 
 ---
 
-# <Issue Title>
+# Issue Title
 
 ## User Story
 > FIXME: fill user story `<when>`  `<who>`  `<what>` `<how>`

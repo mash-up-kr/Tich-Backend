@@ -7,7 +7,7 @@ assignees: vo0a, YJeongKim
 
 ---
 
-# <Issue Title>
+# Issue Title
 
 > FIXME: Describe the task in free format '<something task description>`
 
