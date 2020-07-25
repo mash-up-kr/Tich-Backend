@@ -7,7 +7,8 @@ import mashup.backend.tich.exception.ItemDoseNotExistException;
 import mashup.backend.tich.exception.NoAccessException;
 import mashup.backend.tich.history.domain.History;
 import mashup.backend.tich.history.service.HistoryService;
-import mashup.backend.tich.item.domain.*;
+import mashup.backend.tich.item.domain.Item;
+import mashup.backend.tich.item.domain.ItemRepository;
 import mashup.backend.tich.item.dto.ItemResponseDto;
 import mashup.backend.tich.item.dto.ItemSaveRequestDto;
 import mashup.backend.tich.item.dto.ItemUpdateRequestDto;
@@ -24,7 +25,6 @@ import java.util.List;
 public class ItemService {
 
     private final ItemRepository itemRepository;
-
     private final CategoryService categoryService;
     private final HistoryService historyService;
     private final ItemCycleService itemCycleService;

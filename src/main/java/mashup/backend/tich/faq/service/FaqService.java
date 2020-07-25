@@ -1,6 +1,7 @@
 package mashup.backend.tich.faq.service;
 
 import lombok.RequiredArgsConstructor;
+import mashup.backend.tich.exception.FaqDoseNotExistException;
 import mashup.backend.tich.exception.ResultDoseNotExistException;
 import mashup.backend.tich.faq.domain.Faq;
 import mashup.backend.tich.faq.domain.FaqRepository;
@@ -15,6 +16,12 @@ import java.util.List;
 public class FaqService {
 
     private final FaqRepository faqRepository;
+
+    @Transactional(readOnly = true)
+    public Faq findFaqById(Long id) {
+        return faqRepository.findById(id)
+                .orElseThrow(FaqDoseNotExistException::new);
+    }
 
     @Transactional(readOnly = true)
     public List<FaqResponseDto> showFaqs() {

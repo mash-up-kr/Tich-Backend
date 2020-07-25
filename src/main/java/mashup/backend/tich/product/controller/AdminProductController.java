@@ -3,6 +3,8 @@ package mashup.backend.tich.product.controller;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import mashup.backend.tich.product.dto.ProductResponseDto;
+import mashup.backend.tich.product.dto.ProductSaveRequestDto;
+import mashup.backend.tich.product.dto.ProductUpdateRequestDto;
 import mashup.backend.tich.product.service.AdminProductService;
 import mashup.backend.tich.user.domain.Role;
 import mashup.backend.tich.user.domain.User;
@@ -45,6 +47,51 @@ public class AdminProductController {
         ProductResponseDto productResponseDto = adminProductService.showProduct(productId);
 
         return ResponseEntity.status(HttpStatus.OK).body(productResponseDto);
+    }
+
+    @ApiOperation("제품 등록")
+    @PostMapping
+    public ResponseEntity<ProductResponseDto> saveProduct(@RequestHeader String accessToken,
+                                                          @RequestBody ProductSaveRequestDto requestDto) {
+        // 임시 코드 : 추후 수정
+        User user = makeTempUser();
+        // ToDo : user check (accessToken)
+
+        // ToDo : image S3에 업로드
+
+        ProductResponseDto productResponseDto = adminProductService.saveProduct(requestDto);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(productResponseDto);
+    }
+
+    @ApiOperation("제품 수정")
+    @PutMapping
+    public ResponseEntity<ProductResponseDto> updateProduct(@RequestHeader String accessToken,
+                                                            @RequestBody ProductUpdateRequestDto requestDto) {
+        // 임시 코드 : 추후 수정
+        User user = makeTempUser();
+        // ToDo : user check (accessToken)
+
+        // ToDo : image 변경 확인 후 S3에 업로드 or 삭제
+
+        ProductResponseDto productResponseDto = adminProductService.updateProduct(requestDto);
+
+        return ResponseEntity.status(HttpStatus.OK).body(productResponseDto);
+    }
+
+    @ApiOperation("제품 삭제")
+    @DeleteMapping("/{productId}")
+    public ResponseEntity<Void> deleteProduct(@RequestHeader String accessToken,
+                                              @PathVariable Long productId) {
+        // 임시 코드 : 추후 수정
+        User user = makeTempUser();
+        // ToDo : user check (accessToken)
+
+        // ToDo : S3에 업로드된 image 삭제
+
+        adminProductService.deleteProduct(productId);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     /* 임시 코드 : 삭제 예정 */

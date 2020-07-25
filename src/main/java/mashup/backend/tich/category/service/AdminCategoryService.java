@@ -6,7 +6,6 @@ import mashup.backend.tich.category.domain.CategoryRepository;
 import mashup.backend.tich.category.dto.CategoryResponseDto;
 import mashup.backend.tich.category.dto.CategorySaveRequestDto;
 import mashup.backend.tich.category.dto.CategoryUpdateRequestDto;
-import mashup.backend.tich.exception.ResultDoseNotExistException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AdminCategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final CategoryService categoryService;
 
     @Transactional
     public CategoryResponseDto saveCategory(CategorySaveRequestDto requestDto) {
@@ -29,7 +29,7 @@ public class AdminCategoryService {
 
     @Transactional
     public CategoryResponseDto updateCategory(CategoryUpdateRequestDto requestDto) {
-        Category category = findCategoryById(requestDto.getId());
+        Category category = categoryService.findCategoryById(requestDto.getId());
         category = category.update(requestDto.getName(), requestDto.getAverageCycle());
 
         return CategoryResponseDto.of(category);
@@ -37,13 +37,8 @@ public class AdminCategoryService {
 
     @Transactional
     public void deleteCategory(Long categoryId) {
-        Category category = findCategoryById(categoryId);
+        Category category = categoryService.findCategoryById(categoryId);
 
         categoryRepository.delete(category);
-    }
-
-    private Category findCategoryById(Long id) {
-        return categoryRepository.findById(id)
-                .orElseThrow(ResultDoseNotExistException::new);
     }
 }

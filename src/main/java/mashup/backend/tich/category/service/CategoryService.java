@@ -17,6 +17,12 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
 
     @Transactional(readOnly = true)
+    public Category findCategoryById(Long id) {
+        return categoryRepository.findById(id)
+                .orElseThrow(CategoryDoseNotExistException::new);
+    }
+
+    @Transactional(readOnly = true)
     public Category findCategoryByName(String categoryName) {
         return categoryRepository.findByName(categoryName)
                 .orElseThrow(CategoryDoseNotExistException::new);

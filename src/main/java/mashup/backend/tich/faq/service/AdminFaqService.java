@@ -1,7 +1,6 @@
 package mashup.backend.tich.faq.service;
 
 import lombok.RequiredArgsConstructor;
-import mashup.backend.tich.exception.ResultDoseNotExistException;
 import mashup.backend.tich.faq.domain.Faq;
 import mashup.backend.tich.faq.domain.FaqRepository;
 import mashup.backend.tich.faq.dto.FaqResponseDto;
@@ -15,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AdminFaqService {
 
     private final FaqRepository faqRepository;
+    private final FaqService faqService;
 
     @Transactional
     public FaqResponseDto saveFaq(FaqSaveRequestDto requestDto) {
@@ -29,7 +29,7 @@ public class AdminFaqService {
 
     @Transactional
     public FaqResponseDto updateFaq(FaqUpdateRequestDto requestDto) {
-        Faq faq = findFaqById(requestDto.getId());
+        Faq faq = faqService.findFaqById(requestDto.getId());
         faq = faq.update(requestDto.getQuestion(), requestDto.getAnswer());
 
         return FaqResponseDto.of(faq);
@@ -37,13 +37,8 @@ public class AdminFaqService {
 
     @Transactional
     public void deleteFaq(Long faqId) {
-        Faq faq = findFaqById(faqId);
+        Faq faq = faqService.findFaqById(faqId);
 
         faqRepository.delete(faq);
-    }
-
-    private Faq findFaqById(Long id) {
-        return faqRepository.findById(id)
-                .orElseThrow(ResultDoseNotExistException::new);
     }
 }
