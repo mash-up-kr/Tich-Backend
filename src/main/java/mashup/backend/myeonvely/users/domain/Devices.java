@@ -1,12 +1,14 @@
-package mashup.backend.myeonvely.users.entity;
+package mashup.backend.myeonvely.users.domain;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Getter
+@ToString(exclude = "user")
 @Entity
 @NoArgsConstructor
 public class Devices {
@@ -27,5 +29,4 @@ public class Devices {
         this.token = token;
         this.user = user;
     }
-
 }

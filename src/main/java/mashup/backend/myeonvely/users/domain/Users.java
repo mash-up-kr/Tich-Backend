@@ -1,4 +1,4 @@
-package mashup.backend.myeonvely.users.entity;
+package mashup.backend.myeonvely.users.domain;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -10,9 +10,9 @@ import javax.persistence.*;
 import java.util.List;
 
 @Getter
-@ToString()
-@NoArgsConstructor
+@ToString(exclude = "devices")
 @Entity
+@NoArgsConstructor
 public class Users extends BaseTimeEntity {
 
     @Id
@@ -25,6 +25,7 @@ public class Users extends BaseTimeEntity {
     @Column(nullable = false)
     private String email;
 
+    @Column
     private String picture;
 
     @Enumerated(EnumType.STRING)
@@ -40,6 +41,10 @@ public class Users extends BaseTimeEntity {
         this.email = email;
         this.picture = picture;
         this.role = role;
+    }
+
+    public void setDevices(List<Devices> devices) {
+        this.devices = devices;
     }
 
     public Users update(String name, String picture){
