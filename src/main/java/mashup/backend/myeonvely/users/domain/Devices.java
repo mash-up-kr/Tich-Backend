@@ -1,17 +1,15 @@
 package mashup.backend.myeonvely.users.domain;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+import mashup.backend.myeonvely.common.domain.BaseTimeEntity;
 
 import javax.persistence.*;
 
 @Getter
 @ToString(exclude = "user")
 @Entity
-@NoArgsConstructor
-public class Devices {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class Devices extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
