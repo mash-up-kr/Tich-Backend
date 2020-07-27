@@ -29,7 +29,7 @@ public class Items extends BaseTimeEntity {
     private Category category;
 
     @Column(nullable = false)
-    private String name;
+    private String title;
 
     @Column(nullable = false)
     private LocalDate startDate;
@@ -47,10 +47,10 @@ public class Items extends BaseTimeEntity {
     private List<History> history;
 
     @Builder
-    public Items(Users user, Category category, String name, LocalDate startDate, LocalDate latestDate, LocalDate scheduledDate, Integer cycle) {
+    public Items(Users user, Category category, String title, LocalDate startDate, LocalDate latestDate, LocalDate scheduledDate, Integer cycle) {
         this.user = user;
         this.category = category;
-        this.name = name;
+        this.title = title;
         this.startDate = startDate;
         this.latestDate = latestDate;
         this.scheduledDate = scheduledDate;
