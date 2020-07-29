@@ -1,4 +1,4 @@
-package mashup.backend.myeonvely.items.domain;
+package mashup.backend.myeonvely.item.domain;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -25,7 +25,7 @@ public class Category extends BaseTimeEntity {
     private Integer average_cycle;
 
     @OneToMany(mappedBy = "category")
-    private List<Items> items;
+    private List<Item> items;
 
     @Builder
     public Category(String name, Integer average_cycle) {
@@ -33,7 +33,7 @@ public class Category extends BaseTimeEntity {
         this.average_cycle = average_cycle;
     }
 
-    public void setItems(List<Items> items) {
+    public void setItems(List<Item> items) {
         this.items = items;
     }
 }

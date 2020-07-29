@@ -1,4 +1,4 @@
-package mashup.backend.myeonvely.users.domain;
+package mashup.backend.myeonvely.user.domain;
 
 import lombok.*;
 import mashup.backend.myeonvely.common.domain.BaseTimeEntity;
@@ -9,7 +9,7 @@ import javax.persistence.*;
 @ToString(exclude = "user")
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Devices extends BaseTimeEntity {
+public class Device extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,10 +20,10 @@ public class Devices extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private Users user;
+    private User user;
 
     @Builder
-    public Devices(String token, Users user){
+    public Device(String token, User user){
         this.token = token;
         this.user = user;
     }

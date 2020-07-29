@@ -1,11 +1,11 @@
-package mashup.backend.myeonvely.items.domain;
+package mashup.backend.myeonvely.item.domain;
 
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import mashup.backend.myeonvely.common.domain.BaseTimeEntity;
-import mashup.backend.myeonvely.users.domain.Users;
+import mashup.backend.myeonvely.user.domain.User;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -14,7 +14,7 @@ import java.util.List;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Items extends BaseTimeEntity {
+public class Item extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ public class Items extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private Users user;
+    private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")
@@ -47,7 +47,7 @@ public class Items extends BaseTimeEntity {
     private List<History> history;
 
     @Builder
-    public Items(Users user, Category category, String title, LocalDate startDate, LocalDate latestDate, LocalDate scheduledDate, Integer cycle) {
+    public Item(User user, Category category, String title, LocalDate startDate, LocalDate latestDate, LocalDate scheduledDate, Integer cycle) {
         this.user = user;
         this.category = category;
         this.title = title;

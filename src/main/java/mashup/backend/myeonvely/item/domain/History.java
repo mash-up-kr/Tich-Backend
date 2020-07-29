@@ -1,4 +1,4 @@
-package mashup.backend.myeonvely.items.domain;
+package mashup.backend.myeonvely.item.domain;
 
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -23,13 +23,13 @@ public class History {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "item_id")
-    private Items item;
+    private Item item;
 
     @Column(nullable = false)
     private LocalDate replacement_date;
 
     @Builder
-    public History(Items item, LocalDate replacement_date) {
+    public History(Item item, LocalDate replacement_date) {
         this.item = item;
         this.replacement_date = replacement_date;
     }

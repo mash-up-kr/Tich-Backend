@@ -1,4 +1,4 @@
-package mashup.backend.myeonvely.users.domain;
+package mashup.backend.myeonvely.user.domain;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

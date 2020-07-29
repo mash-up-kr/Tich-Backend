@@ -1,4 +1,4 @@
-package mashup.backend.myeonvely.items.dto;
+package mashup.backend.myeonvely.item.dto;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.time.LocalDate;
 
 @Getter
-public class ItemsResponseDto {
+public class ItemResponseDto {
     private Long id;
     private Long userId;
     private Long categoryId;
@@ -17,7 +17,7 @@ public class ItemsResponseDto {
     private Integer cycle;
 
     @Builder
-    public ItemsResponseDto(Long id, Long userId, Long categoryId, String title, LocalDate startDate, LocalDate latestDate, LocalDate scheduledDate, Integer cycle) {
+    public ItemResponseDto(Long id, Long userId, Long categoryId, String title, LocalDate startDate, LocalDate latestDate, LocalDate scheduledDate, Integer cycle) {
         this.id = id;
         this.userId = userId;
         this.categoryId = categoryId;

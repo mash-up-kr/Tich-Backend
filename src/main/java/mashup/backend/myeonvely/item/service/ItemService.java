@@ -1,10 +1,10 @@
-package mashup.backend.myeonvely.items.service;
+package mashup.backend.myeonvely.item.service;
 
 import lombok.RequiredArgsConstructor;
-import mashup.backend.myeonvely.items.domain.*;
-import mashup.backend.myeonvely.items.dto.ItemsResponseDto;
-import mashup.backend.myeonvely.items.dto.ItemsSaveRequestDto;
-import mashup.backend.myeonvely.users.domain.Users;
+import mashup.backend.myeonvely.item.domain.*;
+import mashup.backend.myeonvely.item.dto.ItemResponseDto;
+import mashup.backend.myeonvely.item.dto.ItemSaveRequestDto;
+import mashup.backend.myeonvely.user.domain.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,19 +16,19 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class ItemsService {
+public class ItemService {
 
-    private final ItemsRepository itemsRepository;
+    private final ItemRepository itemRepository;
     private final CategoryRepository categoryRepository;
     private final HistoryRepository historyRepository;
 
     @Transactional(readOnly = true)
-    public List<ItemsResponseDto> findItems(Users user) {
-        List<ItemsResponseDto> itemsResponseDtos = new ArrayList<>();
-        List<Items> items = itemsRepository.findAllByUserId(user.getId());
+    public List<ItemResponseDto> findItems(User user) {
+        List<ItemResponseDto> itemsResponseDtos = new ArrayList<>();
+        List<Item> items = itemRepository.findAllByUserId(user.getId());
 
-        for(Items item : items) {
-            itemsResponseDtos.add(ItemsResponseDto.builder()
+        for(Item item : items) {
+            itemsResponseDtos.add(ItemResponseDto.builder()
             .id(item.getId())
             .userId(item.getUser().getId())
             .categoryId(item.getCategory().getId())
@@ -43,14 +43,14 @@ public class ItemsService {
     }
 
     @Transactional(readOnly = true)
-    public ItemsResponseDto findItem(Users user, Long itemId) {
-        Items item = itemsRepository.findById(itemId)
+    public ItemResponseDto findItem(User user, Long itemId) {
+        Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new NoResultException());
 
         if(!item.getUser().getId().equals(user.getId()))
             throw new SecurityException("This user does not have access.");
 
-        return ItemsResponseDto.builder()
+        return ItemResponseDto.builder()
                 .id(item.getId())
                 .userId(item.getUser().getId())
                 .categoryId(item.getCategory().getId())
@@ -63,13 +63,13 @@ public class ItemsService {
     }
 
     @Transactional
-    public ItemsResponseDto saveItem(ItemsSaveRequestDto requestDto, Users user) {
+    public ItemResponseDto saveItem(ItemSaveRequestDto requestDto, User user) {
         Category category = categoryRepository.findByName(requestDto.getCategory())
                 .orElseThrow(() -> new NoResultException());
 
         LocalDate startDate = LocalDate.parse(requestDto.getStartDate(), DateTimeFormatter.ISO_DATE);
 
-        Items item = itemsRepository.save(Items.builder()
+        Item item = itemRepository.save(Item.builder()
                 .user(user)
                 .category(category)
                 .title(requestDto.getTitle())
@@ -87,7 +87,7 @@ public class ItemsService {
 
         item.setHistory(history);
 
-        return ItemsResponseDto.builder()
+        return ItemResponseDto.builder()
                 .id(item.getId())
                 .userId(item.getUser().getId())
                 .categoryId(item.getCategory().getId())

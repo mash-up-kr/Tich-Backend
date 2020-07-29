@@ -1,4 +1,4 @@
-package mashup.backend.myeonvely.items.domain;
+package mashup.backend.myeonvely.item.domain;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
