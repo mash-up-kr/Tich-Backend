@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import mashup.backend.myeonvely.item.domain.*;
 import mashup.backend.myeonvely.item.dto.ItemResponseDto;
 import mashup.backend.myeonvely.item.dto.ItemSaveRequestDto;
+import mashup.backend.myeonvely.item.dto.ItemsResponseDto;
 import mashup.backend.myeonvely.user.domain.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,23 +24,25 @@ public class ItemService {
     private final HistoryRepository historyRepository;
 
     @Transactional(readOnly = true)
-    public List<ItemResponseDto> findItems(User user) {
+    public ItemsResponseDto findItems(User user) {
         List<ItemResponseDto> itemsResponseDtos = new ArrayList<>();
         List<Item> items = itemRepository.findAllByUserId(user.getId());
 
-        for(Item item : items) {
+        for (Item item : items) {
             itemsResponseDtos.add(ItemResponseDto.builder()
-            .id(item.getId())
-            .userId(item.getUser().getId())
-            .categoryId(item.getCategory().getId())
-            .title(item.getTitle())
-            .startDate(item.getStartDate())
-            .latestDate(item.getLatestDate())
-            .scheduledDate(item.getScheduledDate())
-            .cycle(item.getCycle())
-            .build());
+                    .id(item.getId())
+                    .userId(item.getUser().getId())
+                    .categoryId(item.getCategory().getId())
+                    .title(item.getTitle())
+                    .startDate(item.getStartDate())
+                    .latestDate(item.getLatestDate())
+                    .scheduledDate(item.getScheduledDate())
+                    .cycle(item.getCycle())
+                    .build());
         }
-        return itemsResponseDtos;
+        return ItemsResponseDto.builder()
+                .itemResponseDtos(itemsResponseDtos)
+                .build();
     }
 
     @Transactional(readOnly = true)
@@ -47,7 +50,7 @@ public class ItemService {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new NoResultException());
 
-        if(!item.getUser().getId().equals(user.getId()))
+        if (!item.getUser().getId().equals(user.getId()))
             throw new SecurityException("This user does not have access.");
 
         return ItemResponseDto.builder()

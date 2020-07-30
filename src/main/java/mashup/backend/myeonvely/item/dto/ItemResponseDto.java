@@ -7,6 +7,7 @@ import java.time.LocalDate;
 
 @Getter
 public class ItemResponseDto {
+
     private Long id;
     private Long userId;
     private Long categoryId;
