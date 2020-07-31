@@ -60,4 +60,14 @@ public class Item extends BaseTimeEntity {
     public void setHistory(List<History> history) {
         this.history = history;
     }
+
+    public Item update(Category category, String title, LocalDate startDate, LocalDate latestDate, LocalDate scheduledDate, Integer cycle) {
+        this.category = category;
+        this.title = title;
+        this.startDate = startDate;
+        this.latestDate = latestDate;
+        this.scheduledDate = scheduledDate;
+        this.cycle = cycle;
+        return this;
+    }
 }
