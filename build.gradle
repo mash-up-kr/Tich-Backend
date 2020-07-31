@@ -34,13 +34,18 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     runtimeOnly 'com.h2database:h2'
-
     runtimeOnly 'mysql:mysql-connector-java'
 
     implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
     implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'org.springframework.session:spring-session-jdbc'
+    implementation 'io.jsonwebtoken:jjwt-api:0.10.7'
+    runtime 'io.jsonwebtoken:jjwt-impl:0.10.7'
+    runtime 'io.jsonwebtoken:jjwt-jackson:0.10.7'
+
 
     testImplementation('org.springframework.boot:spring-boot-starter-test')
+    testImplementation('org.springframework.security:spring-security-test')
 }
