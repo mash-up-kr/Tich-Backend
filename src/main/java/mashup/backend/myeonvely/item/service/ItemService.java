@@ -139,6 +139,18 @@ public class ItemService {
                 .build();
     }
 
+    @Transactional
+    public void deleteItem(User user, Long itemId) {
+        Item item = itemRepository.findById(itemId)
+                .orElseThrow(() -> new NoResultException("There is no result for this item id."));
+
+        if (!item.getUser().getId().equals(user.getId()))
+            throw new SecurityException("This user does not have access.");
+
+        itemRepository.delete(item);
+//        historyRepository.deleteAllByItemId(itemId);
+    }
+
     private LocalDate calculateScheduledDate(LocalDate latestDate, Integer cycle) {
         return latestDate.plusDays(cycle);
     }
@@ -154,6 +166,7 @@ public class ItemService {
     private void updateHistory(Item item, LocalDate startDate) {
         List<History> history = new ArrayList<>();
                             // = historyRepository.(item.getId());
+
         if(history.size() > 0) {
 //            history.get(0).update(startDate);
         }
