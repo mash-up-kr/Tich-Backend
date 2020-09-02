@@ -27,8 +27,7 @@ public class FaqService {
 
     @Transactional(readOnly = true)
     public FaqResponseDto showFaq(Long faqId) {
-        Faq faq = faqRepository.findById(faqId)
-                .orElseThrow(ResultDoseNotExistException::new);
+        Faq faq = findFaqById(faqId);
 
         return FaqResponseDto.of(faq);
     }
@@ -46,10 +45,21 @@ public class FaqService {
 
     @Transactional
     public FaqResponseDto updateFaq(FaqUpdateRequestDto requestDto) {
-        Faq faq = faqRepository.findById(requestDto.getId())
-                .orElseThrow(ResultDoseNotExistException::new);
+        Faq faq = findFaqById(requestDto.getId());
         faq = faq.update(requestDto.getQuestion(), requestDto.getAnswer());
 
         return FaqResponseDto.of(faq);
+    }
+
+    @Transactional
+    public void deleteFaq(Long faqId) {
+        Faq faq = findFaqById(faqId);
+
+        faqRepository.delete(faq);
+    }
+
+    private Faq findFaqById(Long id) {
+        return faqRepository.findById(id)
+                .orElseThrow(ResultDoseNotExistException::new);
     }
 }

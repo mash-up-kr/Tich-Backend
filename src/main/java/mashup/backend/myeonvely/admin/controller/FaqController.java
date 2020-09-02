@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.NoResultException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -65,13 +66,33 @@ public class FaqController {
         return ResponseEntity.status(HttpStatus.OK).body(faqResponseDto);
     }
 
+    @ApiOperation("FAQ 삭제")
+    @DeleteMapping("/{faqId}")
+    public ResponseEntity<Void> deleteFaq(@RequestHeader String accessToken,
+                                          @PathVariable Long faqId) {
+        // 임시 코드 : 추후 수정
+        User user = makeTempUser();
+        // ToDo : user check (accessToken)
+
+        faqService.deleteFaq(faqId);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
     /* 임시 코드 : 삭제 예정 */
     private User makeTempUser() {
-        return userRepository.save(User.builder()
-                .name("관리자")
-                .email("admin")
-                .picture("temp")
-                .role(Role.ADMIN)
-                .build());
+        User user;
+        try {
+            user = userRepository.findByEmail("admin")
+                    .orElseThrow(() -> new NoResultException());
+        } catch (NoResultException e) {
+            user = userRepository.save(User.builder()
+                    .name("관리자")
+                    .email("admin")
+                    .picture("temp")
+                    .role(Role.ADMIN)
+                    .build());
+        }
+        return user;
     }
 }
