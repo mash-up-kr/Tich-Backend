@@ -5,6 +5,7 @@ import mashup.backend.myeonvely.admin.domain.Faq;
 import mashup.backend.myeonvely.admin.domain.FaqRepository;
 import mashup.backend.myeonvely.admin.dto.FaqResponseDto;
 import mashup.backend.myeonvely.admin.dto.FaqSaveRequestDto;
+import mashup.backend.myeonvely.admin.dto.FaqUpdateRequestDto;
 import mashup.backend.myeonvely.exception.ResultDoseNotExistException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +40,15 @@ public class FaqService {
                 .answer(requestDto.getAnswer())
                 .build();
         faq = faqRepository.save(faq);
+
+        return FaqResponseDto.of(faq);
+    }
+
+    @Transactional
+    public FaqResponseDto updateFaq(FaqUpdateRequestDto requestDto) {
+        Faq faq = faqRepository.findById(requestDto.getId())
+                .orElseThrow(ResultDoseNotExistException::new);
+        faq = faq.update(requestDto.getQuestion(), requestDto.getAnswer());
 
         return FaqResponseDto.of(faq);
     }

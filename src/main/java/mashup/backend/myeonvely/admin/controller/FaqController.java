@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import mashup.backend.myeonvely.admin.dto.FaqResponseDto;
 import mashup.backend.myeonvely.admin.dto.FaqSaveRequestDto;
+import mashup.backend.myeonvely.admin.dto.FaqUpdateRequestDto;
 import mashup.backend.myeonvely.admin.service.FaqService;
 import mashup.backend.myeonvely.user.domain.Role;
 import mashup.backend.myeonvely.user.domain.User;
@@ -49,6 +50,19 @@ public class FaqController {
         FaqResponseDto faqResponseDto = faqService.saveFaq(requestDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(faqResponseDto);
+    }
+
+    @ApiOperation("FAQ 수정")
+    @PutMapping
+    public ResponseEntity<FaqResponseDto> updateFaq(@RequestHeader String accessToken,
+                                                    @RequestBody FaqUpdateRequestDto requestDto) {
+        // 임시 코드 : 추후 수정
+        User user = makeTempUser();
+        // ToDo : user check (accessToken)
+
+        FaqResponseDto faqResponseDto = faqService.updateFaq(requestDto);
+
+        return ResponseEntity.status(HttpStatus.OK).body(faqResponseDto);
     }
 
     /* 임시 코드 : 삭제 예정 */
