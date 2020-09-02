@@ -13,6 +13,7 @@ import java.util.List;
 
 @Getter
 @Entity
+@Table(name = "items")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Item extends BaseTimeEntity {
 
@@ -43,7 +44,7 @@ public class Item extends BaseTimeEntity {
     @Column(nullable = false)
     private Integer cycle;
 
-    @OneToMany(mappedBy = "item")
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<History> history;
 
     @Builder
@@ -69,5 +70,17 @@ public class Item extends BaseTimeEntity {
         this.scheduledDate = scheduledDate;
         this.cycle = cycle;
         return this;
+    }
+
+    public boolean isOwner(User user) {
+        return this.getUser().getId().equals(user.getId());
+    }
+
+    public boolean isSameCategory(String compareName) {
+        return this.getCategory().getName().equals(compareName);
+    }
+
+    public boolean isSameStartDate(LocalDate date) {
+        return this.getStartDate().equals(date);
     }
 }

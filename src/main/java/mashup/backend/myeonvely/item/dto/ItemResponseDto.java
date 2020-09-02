@@ -2,8 +2,11 @@ package mashup.backend.myeonvely.item.dto;
 
 import lombok.Builder;
 import lombok.Getter;
+import mashup.backend.myeonvely.item.domain.Item;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 public class ItemResponseDto {
@@ -27,5 +30,24 @@ public class ItemResponseDto {
         this.latestDate = latestDate;
         this.scheduledDate = scheduledDate;
         this.cycle = cycle;
+    }
+
+    public static ItemResponseDto of(Item item) {
+        return ItemResponseDto.builder()
+                .id(item.getId())
+                .userId(item.getUser().getId())
+                .categoryId(item.getCategory().getId())
+                .title(item.getTitle())
+                .startDate(item.getStartDate())
+                .latestDate(item.getLatestDate())
+                .scheduledDate(item.getScheduledDate())
+                .cycle(item.getCycle())
+                .build();
+    }
+
+    public static List<ItemResponseDto> listOf(List<Item> items) {
+        return items.stream()
+                .map(ItemResponseDto::of)
+                .collect(Collectors.toList());
     }
 }

@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import mashup.backend.myeonvely.item.dto.ItemResponseDto;
 import mashup.backend.myeonvely.item.dto.ItemSaveRequestDto;
 import mashup.backend.myeonvely.item.dto.ItemUpdateRequestDto;
-import mashup.backend.myeonvely.item.dto.ItemsResponseDto;
 import mashup.backend.myeonvely.item.service.ItemService;
 import mashup.backend.myeonvely.user.domain.Role;
 import mashup.backend.myeonvely.user.domain.User;
@@ -15,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.NoResultException;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -26,7 +26,7 @@ public class ItemController {
 
     @ApiOperation("생활용품 목록 조회")
     @GetMapping
-    public ResponseEntity<ItemsResponseDto> findItems(@RequestHeader String accessToken) {
+    public ResponseEntity<List<ItemResponseDto>> findItems(@RequestHeader String accessToken) {
         // 임시 코드 : 추후 수정
         User user;
         try {
@@ -42,7 +42,7 @@ public class ItemController {
         }
         // ToDo : user check (accessToken)
 
-        ItemsResponseDto itemsResponseDto = itemService.findItems(user);
+        List<ItemResponseDto> itemsResponseDto = itemService.findItems(user);
 
         return ResponseEntity.status(HttpStatus.OK).body(itemsResponseDto);
     }

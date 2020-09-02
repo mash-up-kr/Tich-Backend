@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 import mashup.backend.myeonvely.common.domain.BaseTimeEntity;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @Entity
+@Table(name = "category")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Category extends BaseTimeEntity {
 
@@ -22,18 +22,11 @@ public class Category extends BaseTimeEntity {
     private String name;
 
     @Column(nullable = false)
-    private Integer average_cycle;
-
-    @OneToMany(mappedBy = "category")
-    private List<Item> items;
+    private Integer averageCycle;
 
     @Builder
-    public Category(String name, Integer average_cycle) {
+    public Category(String name, Integer averageCycle) {
         this.name = name;
-        this.average_cycle = average_cycle;
-    }
-
-    public void setItems(List<Item> items) {
-        this.items = items;
+        this.averageCycle = averageCycle;
     }
 }
