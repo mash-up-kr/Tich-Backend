@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import mashup.backend.myeonvely.admin.domain.Faq;
 import mashup.backend.myeonvely.admin.domain.FaqRepository;
 import mashup.backend.myeonvely.admin.dto.FaqResponseDto;
+import mashup.backend.myeonvely.admin.dto.FaqSaveRequestDto;
 import mashup.backend.myeonvely.exception.ResultDoseNotExistException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,17 @@ public class FaqService {
     public FaqResponseDto showFaq(Long faqId) {
         Faq faq = faqRepository.findById(faqId)
                 .orElseThrow(ResultDoseNotExistException::new);
+
+        return FaqResponseDto.of(faq);
+    }
+
+    @Transactional
+    public FaqResponseDto saveFaq(FaqSaveRequestDto requestDto) {
+        Faq faq = Faq.builder()
+                .question(requestDto.getQuestion())
+                .answer(requestDto.getAnswer())
+                .build();
+        faq = faqRepository.save(faq);
 
         return FaqResponseDto.of(faq);
     }
