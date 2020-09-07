@@ -29,4 +29,10 @@ public class Category extends BaseTimeEntity {
         this.name = name;
         this.averageCycle = averageCycle;
     }
+
+    public Category update(String name, Integer averageCycle) {
+        this.name = name;
+        this.averageCycle = averageCycle;
+        return this;
+    }
 }
