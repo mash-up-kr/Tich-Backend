@@ -4,7 +4,9 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import mashup.backend.tich.category.domain.Category;
 import mashup.backend.tich.common.domain.BaseTimeEntity;
+import mashup.backend.tich.history.domain.History;
 import mashup.backend.tich.user.domain.User;
 
 import javax.persistence.*;

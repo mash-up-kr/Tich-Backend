@@ -2,6 +2,7 @@ package mashup.backend.tich.user.domain;
 
 import lombok.*;
 import mashup.backend.tich.common.domain.BaseTimeEntity;
+import mashup.backend.tich.device.domain.Device;
 
 import javax.persistence.*;
 import java.util.List;

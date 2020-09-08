@@ -1,8 +1,12 @@
 package mashup.backend.tich.item.service;
 
 import lombok.RequiredArgsConstructor;
+import mashup.backend.tich.category.domain.Category;
+import mashup.backend.tich.category.service.CategoryService;
 import mashup.backend.tich.exception.ItemDoseNotExistException;
 import mashup.backend.tich.exception.NoAccessException;
+import mashup.backend.tich.history.domain.History;
+import mashup.backend.tich.history.service.HistoryService;
 import mashup.backend.tich.item.domain.*;
 import mashup.backend.tich.item.dto.ItemResponseDto;
 import mashup.backend.tich.item.dto.ItemSaveRequestDto;
@@ -44,7 +48,7 @@ public class ItemService {
 
     @Transactional
     public ItemResponseDto saveItem(ItemSaveRequestDto requestDto, User user) {
-        Category category = categoryService.findCategory(requestDto.getCategory());
+        Category category = categoryService.findCategoryByName(requestDto.getCategory());
 
         LocalDate startDate = itemCycleService.parseDate(requestDto.getStartDate());
         LocalDate scheduledDate = itemCycleService.calculateScheduledDate(startDate, requestDto.getCycle());
@@ -74,7 +78,7 @@ public class ItemService {
 
         Category category = item.getCategory();
         if (!item.isSameCategory(requestDto.getCategory()))
-            category = categoryService.findCategory(requestDto.getCategory());
+            category = categoryService.findCategoryByName(requestDto.getCategory());
 
         LocalDate startDate = LocalDate.parse(requestDto.getStartDate(), DateTimeFormatter.ISO_DATE);
         LocalDate latestDate = item.getLatestDate();

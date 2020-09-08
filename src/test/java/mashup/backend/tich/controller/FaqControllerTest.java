@@ -1,9 +1,10 @@
 package mashup.backend.tich.controller;
 
-import mashup.backend.tich.admin.domain.FaqRepository;
-import mashup.backend.tich.admin.dto.FaqResponseDto;
-import mashup.backend.tich.admin.dto.FaqSaveRequestDto;
-import mashup.backend.tich.admin.service.FaqService;
+import mashup.backend.tich.faq.domain.FaqRepository;
+import mashup.backend.tich.faq.dto.FaqResponseDto;
+import mashup.backend.tich.faq.dto.FaqSaveRequestDto;
+import mashup.backend.tich.faq.service.AdminFaqService;
+import mashup.backend.tich.faq.service.FaqService;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,6 +33,9 @@ public class FaqControllerTest {
 
     @Autowired
     private TestRestTemplate restTemplate;
+
+    @Autowired
+    private AdminFaqService adminFaqService;
 
     @Autowired
     private FaqService faqService;
@@ -85,12 +89,12 @@ public class FaqControllerTest {
         String question2 = "두번째 질문하기";
         String answer2 = "두번째 답변하기";
 
-        faqService.saveFaq(FaqSaveRequestDto.builder()
+        adminFaqService.saveFaq(FaqSaveRequestDto.builder()
                 .question(question1)
                 .answer(answer1)
                 .build());
 
-        faqService.saveFaq(FaqSaveRequestDto.builder()
+        adminFaqService.saveFaq(FaqSaveRequestDto.builder()
                 .question(question2)
                 .answer(answer2)
                 .build());
