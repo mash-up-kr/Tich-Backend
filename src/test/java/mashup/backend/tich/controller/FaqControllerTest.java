@@ -50,7 +50,7 @@ public class FaqControllerTest {
 
     @Test
     public void FAQ_등록하다() throws Exception {
-        String url = root + port + "/faq";
+        String url = root + port + "/admin/faq";
         String accessToken = "abcdefg";
 
         // given
@@ -81,7 +81,7 @@ public class FaqControllerTest {
 
     @Test
     public void FAQ_목록조회하다() {
-        String url = root + port + "/faq";
+        String url = root + port + "/admin/faq";
 
         // given
         String question1 = "첫번째 질문하기";
