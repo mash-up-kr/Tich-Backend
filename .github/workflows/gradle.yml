@@ -42,8 +42,7 @@ jobs:
         run: cp build/libs/*.jar tich-deploy/
 
       - name: Make zip file
-        run: cd tich-deploy && zip -r tich-deploy *
-        shell: bash
+        run: zip -r tich-deploy.zip tich-deploy/*
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
