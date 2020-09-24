@@ -55,8 +55,6 @@ jobs:
       - name: Upload to S3
         run: aws s3 cp \
           --region ap-northeast-2 \
-          --acl private \
-          --skip_cleanup true \
           tich-deploy.zip s3://mash-up-tich-build/$PROJECT_NAME/tich-deploy.zip
 
       - name: Code Deploy
