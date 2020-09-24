@@ -33,7 +33,7 @@ jobs:
         run: mkdir -p tich-deploy
 
       - name: Copy shell script
-        run: cp script/*.sh tich-deploy/
+        run: cp scripts/*.sh tich-deploy/
 
       - name: Copy appspec
         run: cp appspec.yml tich-deploy/
