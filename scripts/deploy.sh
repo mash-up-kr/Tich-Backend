@@ -1,7 +1,7 @@
 #!/bin/bash
 
 REPOSITORY=/home/ec2-user/app/git
-PROJECT_NAME=Tich-Backend
+PROJECT_NAME=tich
 
 echo "> Build 파일 복사"
 

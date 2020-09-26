@@ -1,6 +1,4 @@
 name: Deploy Tich to Amazon EC2
-env:
-  PROJECT_NAME: Tich-Backend
 
 on:
   push:
