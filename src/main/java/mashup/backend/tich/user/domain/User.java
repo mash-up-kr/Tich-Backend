@@ -34,11 +34,17 @@ public class User extends BaseTimeEntity {
     private List<Device> devices;
 
     @Builder
-    public User(String name, String email, String picture, Role role) {
+    public User(String name, String email, String picture, Role role){
         this.name = name;
         this.email = email;
         this.picture = picture;
         this.role = role;
+    }
+
+    @Builder
+    public User(String name, String email){
+        this.name = name;
+        this.email = email;
     }
 
     public void setDevices(List<Device> devices) {

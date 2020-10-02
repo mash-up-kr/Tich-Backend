@@ -10,6 +10,7 @@ import mashup.backend.tich.category.service.CategoryService;
 import mashup.backend.tich.user.domain.Role;
 import mashup.backend.tich.user.domain.User;
 import mashup.backend.tich.user.domain.UserRepository;
+import mashup.backend.tich.user.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,7 @@ public class AdminCategoryController {
     private final AdminCategoryService adminCategoryService;
     private final CategoryService categoryService;
     private final UserRepository userRepository; /* 삭제 예정(관리자 확인용) */
+    private final UserService userService;
 
     @ApiOperation("카테고리 목록 조회")
     @GetMapping
@@ -44,11 +46,12 @@ public class AdminCategoryController {
 
     @ApiOperation("카테고리 등록")
     @PostMapping
-    public ResponseEntity<CategoryResponseDto> saveCategory(@RequestHeader String accessToken,
+    public ResponseEntity<CategoryResponseDto> saveCategory(@RequestHeader("TICH-TOKEN") String accessToken,
                                                             @RequestBody CategorySaveRequestDto requestDto) {
-        // 임시 코드 : 추후 수정
-        User user = makeTempUser();
-        // ToDo : user check (accessToken)
+//        // 임시 코드 : 추후 수정
+//        User user = makeTempUser();
+//        // ToDo : user check (accessToken)
+        User user = userService.findUserByToken(accessToken);
 
         CategoryResponseDto categoryResponseDto = adminCategoryService.saveCategory(requestDto);
 

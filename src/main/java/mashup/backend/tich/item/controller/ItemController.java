@@ -6,9 +6,11 @@ import mashup.backend.tich.item.dto.ItemResponseDto;
 import mashup.backend.tich.item.dto.ItemSaveRequestDto;
 import mashup.backend.tich.item.dto.ItemUpdateRequestDto;
 import mashup.backend.tich.item.service.ItemService;
+import mashup.backend.tich.jwt.JwtProvider;
 import mashup.backend.tich.user.domain.Role;
 import mashup.backend.tich.user.domain.User;
 import mashup.backend.tich.user.domain.UserRepository;
+import mashup.backend.tich.user.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,25 +24,13 @@ import java.util.List;
 public class ItemController {
 
     private final ItemService itemService;
-    private final UserRepository userRepository; /* 삭제 예정 */
+    private final UserRepository userRepository;
+    private final UserService userService;
 
     @ApiOperation("생활용품 목록 조회")
     @GetMapping
-    public ResponseEntity<List<ItemResponseDto>> findItems(@RequestHeader String accessToken) {
-        // 임시 코드 : 추후 수정
-        User user;
-        try {
-            user = userRepository.findByEmail("temp")
-                    .orElseThrow(() -> new NoResultException());
-        } catch (NoResultException e) {
-            user = userRepository.save(User.builder()
-                    .name("temp")
-                    .email("temp")
-                    .picture("temp")
-                    .role(Role.USER)
-                    .build());
-        }
-        // ToDo : user check (accessToken)
+    public ResponseEntity<List<ItemResponseDto>> findItems(@RequestHeader("TICH-TOKEN") String accessToken) {
+        User user = userService.findUserByToken(accessToken);
 
         List<ItemResponseDto> itemsResponseDto = itemService.findItems(user);
 
@@ -73,16 +63,9 @@ public class ItemController {
 
     @ApiOperation("생활용품 등록")
     @PostMapping
-    public ResponseEntity<ItemResponseDto> saveItem(@RequestHeader String accessToken,
+    public ResponseEntity<ItemResponseDto> saveItem(@RequestHeader("TICH-TOKEN") String accessToken,
                                                     @RequestBody ItemSaveRequestDto requestDto) {
-        // 임시 코드 : 추후 수정
-        User user = userRepository.save(User.builder()
-                .name("temp")
-                .email("temp")
-                .picture("temp")
-                .role(Role.USER)
-                .build());
-        // ToDo : user check (accessToken)
+        User user = userService.findUserByToken(accessToken);
 
         ItemResponseDto itemResponseDto = itemService.saveItem(requestDto, user);
 
