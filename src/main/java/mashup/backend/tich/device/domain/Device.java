@@ -7,8 +7,9 @@ import mashup.backend.tich.user.domain.User;
 import javax.persistence.*;
 
 @Getter
-@ToString(exclude = "user")
 @Entity
+@ToString(exclude = "user")
+@Table(name = "devices")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Device extends BaseTimeEntity {
 
