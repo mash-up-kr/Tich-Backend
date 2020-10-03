@@ -11,7 +11,7 @@ public class SignUpResponseDto {
     private String name;
 
     @Builder
-    public SignUpResponseDto(Long id, String token, String name){
+    public SignUpResponseDto(Long id, String token, String name) {
         this.id = id;
         this.token = token;
         this.name = name;

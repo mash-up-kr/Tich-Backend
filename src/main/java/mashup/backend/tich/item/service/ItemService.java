@@ -92,7 +92,7 @@ public class ItemService {
         item = item.update(category, requestDto.getTitle(), startDate, latestDate, scheduledDate, requestDto.getCycle());
 
         List<History> histories = historyService.updateHistory(user.getId(), item.getId(), startDate, latestDate);
-        item.setHistory(histories);
+        item.updateHistory(histories);
 
         return ItemResponseDto.of(item);
     }
@@ -103,7 +103,7 @@ public class ItemService {
 
         if (!item.isOwner(user)) throw new NoAccessException();
 
-        historyService.deleteHistory(user.getId(), itemId);
+        historyService.deleteHistory(user, item);
 
         itemRepository.delete(item);
     }

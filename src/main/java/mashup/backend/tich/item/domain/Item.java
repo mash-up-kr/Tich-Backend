@@ -60,10 +60,6 @@ public class Item extends BaseTimeEntity {
         this.cycle = cycle;
     }
 
-    public void setHistory(List<History> history) {
-        this.history = history;
-    }
-
     public Item update(Category category, String title, LocalDate startDate, LocalDate latestDate, LocalDate scheduledDate, Integer cycle) {
         this.category = category;
         this.title = title;
@@ -71,7 +67,17 @@ public class Item extends BaseTimeEntity {
         this.latestDate = latestDate;
         this.scheduledDate = scheduledDate;
         this.cycle = cycle;
+
         return this;
+    }
+
+    public void setHistory(List<History> history) {
+        this.history = history;
+    }
+
+    public void updateHistory(List<History> history) {
+        this.history.clear();
+        this.history.addAll(history);
     }
 
     public boolean isOwner(User user) {

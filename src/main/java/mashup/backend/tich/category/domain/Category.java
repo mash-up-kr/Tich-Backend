@@ -33,6 +33,7 @@ public class Category extends BaseTimeEntity {
     public Category update(String name, Integer averageCycle) {
         this.name = name;
         this.averageCycle = averageCycle;
+
         return this;
     }
 }

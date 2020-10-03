@@ -51,9 +51,10 @@ public class HistoryService {
     }
 
     @Transactional
-    public void deleteHistory(Long userId, Long itemId) {
-        if (!historyRepository.existsAllByItemId(itemId)) throw new HistoryDoseNotExistException();
-        historyRepository.deleteAllByUserIdAndItemId(userId, itemId);
+    public void deleteHistory(User user, Item item) {
+        if (!historyRepository.existsAllByItemId(item.getId())) throw new HistoryDoseNotExistException();
+
+        historyRepository.deleteAllByUserAndItem(user, item);
     }
 
     private void sortList(List<History> histories) {

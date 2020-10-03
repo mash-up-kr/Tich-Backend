@@ -1,9 +1,12 @@
 package mashup.backend.tich.item.dto;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ItemSaveRequestDto {
 
     private String category;

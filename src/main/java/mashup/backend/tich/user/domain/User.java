@@ -8,8 +8,9 @@ import javax.persistence.*;
 import java.util.List;
 
 @Getter
-@ToString(exclude = "devices")
 @Entity
+@ToString(exclude = "devices")
+@Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseTimeEntity {
 
@@ -30,25 +31,22 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private Role role;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Device> devices;
 
     @Builder
-    public User(String name, String email, String picture, Role role){
+    public User(String name, String email, Role role) {
         this.name = name;
         this.email = email;
-        this.picture = picture;
         this.role = role;
     }
 
     @Builder
-    public User(String name, String email){
+    public User(String name, String email, String picture, Role role) {
         this.name = name;
         this.email = email;
-    }
-
-    public void setDevices(List<Device> devices) {
-        this.devices = devices;
+        this.picture = picture;
+        this.role = role;
     }
 
     public User update(String name, String picture) {
@@ -56,6 +54,14 @@ public class User extends BaseTimeEntity {
         this.picture = picture;
 
         return this;
+    }
+
+    public void setDevices(List<Device> devices) {
+        this.devices = devices;
+    }
+
+    public void addDevice(Device device) {
+        this.devices.add(device);
     }
 
     public String getRoleKey() {
