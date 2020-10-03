@@ -6,16 +6,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @Getter
 @ResponseStatus(code = HttpStatus.BAD_REQUEST)
-public class UserDoseNotExistException extends BaseException {
+public class FailToSignUp extends BaseException {
 
-    public UserDoseNotExistException(){
-        this("User does not exist.");
-    }
-
-    public UserDoseNotExistException(String message){
+    public FailToSignUp(String message){
         super(ErrorCode.builder()
                 .httpStatus(HttpStatus.BAD_REQUEST)
-                .message("[ UserNotFoundException ]\n" + message)
+                .message("[ Fail to sign-up ]\n" + message)
                 .build());
     }
 }

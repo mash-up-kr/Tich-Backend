@@ -15,7 +15,7 @@ public class ErrorCode {
     private LocalDateTime timestamp;
 
     @Builder
-    public ErrorCode(HttpStatus httpStatus, String message){
+    public ErrorCode(HttpStatus httpStatus, String message) {
         this.httpStatus = httpStatus;
         this.message = message;
         this.timestamp = LocalDateTime.now();

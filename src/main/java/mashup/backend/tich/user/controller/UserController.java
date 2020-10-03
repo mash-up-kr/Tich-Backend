@@ -2,16 +2,13 @@ package mashup.backend.tich.user.controller;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import mashup.backend.tich.jwt.JwtProvider;
-import mashup.backend.tich.user.dto.SignInResponseDto;
+import mashup.backend.tich.exception.FailToSignUp;
+import mashup.backend.tich.exception.InvalidTokendException;
 import mashup.backend.tich.user.dto.SignUpRequestDto;
-import mashup.backend.tich.user.dto.SignUpResponseDto;
 import mashup.backend.tich.user.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 
 @RequiredArgsConstructor
 @RestController
@@ -27,7 +24,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.OK).body(userService.signUp(signUpRequestDto));
         }
         catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.toString());
+            throw new FailToSignUp(e.toString());
         }
     }
 
@@ -46,7 +43,18 @@ public class UserController {
              */
         }
         catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.toString());
+            throw new InvalidTokendException(e.toString());
+        }
+    }
+
+    @ApiOperation("탈퇴")
+    @DeleteMapping("/withdraw")
+    public ResponseEntity<?> withdraw(@RequestHeader("TICH-TOKEN") String token){
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(userService.withdraw(token));
+        }
+        catch (Exception e) {
+            throw new InvalidTokendException(e.toString());
         }
     }
 
