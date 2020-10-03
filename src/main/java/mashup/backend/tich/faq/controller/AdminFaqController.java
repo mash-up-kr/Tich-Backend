@@ -8,15 +8,11 @@ import mashup.backend.tich.faq.dto.FaqSaveRequestDto;
 import mashup.backend.tich.faq.dto.FaqUpdateRequestDto;
 import mashup.backend.tich.faq.service.AdminFaqService;
 import mashup.backend.tich.faq.service.FaqService;
-import mashup.backend.tich.user.domain.Role;
-import mashup.backend.tich.user.domain.User;
-import mashup.backend.tich.user.domain.UserRepository;
 import mashup.backend.tich.user.service.AdminUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.NoResultException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -27,13 +23,11 @@ public class AdminFaqController {
     private final AdminFaqService adminFaqService;
     private final AdminUserService adminUserService;
     private final FaqService faqService;
-    private final UserRepository userRepository; /* 삭제 예정(관리자 확인용) */
-
 
     @ApiOperation("FAQ 목록 조회")
     @GetMapping
     public ResponseEntity<List<FaqResponseDto>> showFaqs(@RequestHeader("TICH-TOKEN") String token) {
-        if(!adminUserService.adminByToken(token)) throw new NoAccessException("Admin only");
+        if (!adminUserService.adminByToken(token)) throw new NoAccessException("Admin only");
 
         List<FaqResponseDto> faqResponseDto = faqService.showFaqs();
 
@@ -42,8 +36,9 @@ public class AdminFaqController {
 
     @ApiOperation("FAQ 상세 조회")
     @GetMapping("/{faqId}")
-    public ResponseEntity<FaqResponseDto> showFaq(@RequestHeader("TICH-TOKEN") String token, @PathVariable Long faqId) {
-        if(!adminUserService.adminByToken(token)) throw new NoAccessException("Admin only");
+    public ResponseEntity<FaqResponseDto> showFaq(@RequestHeader("TICH-TOKEN") String token,
+                                                  @PathVariable Long faqId) {
+        if (!adminUserService.adminByToken(token)) throw new NoAccessException("Admin only");
 
         FaqResponseDto faqResponseDto = faqService.showFaq(faqId);
 
@@ -54,7 +49,7 @@ public class AdminFaqController {
     @PostMapping
     public ResponseEntity<FaqResponseDto> saveFaq(@RequestHeader("TICH-TOKEN") String token,
                                                   @RequestBody FaqSaveRequestDto requestDto) {
-        if(!adminUserService.adminByToken(token)) throw new NoAccessException("Admin only");
+        if (!adminUserService.adminByToken(token)) throw new NoAccessException("Admin only");
 
         FaqResponseDto faqResponseDto = adminFaqService.saveFaq(requestDto);
 
@@ -65,7 +60,7 @@ public class AdminFaqController {
     @PutMapping
     public ResponseEntity<FaqResponseDto> updateFaq(@RequestHeader("TICH-TOKEN") String token,
                                                     @RequestBody FaqUpdateRequestDto requestDto) {
-        if(!adminUserService.adminByToken(token)) throw new NoAccessException("Admin only");
+        if (!adminUserService.adminByToken(token)) throw new NoAccessException("Admin only");
 
         FaqResponseDto faqResponseDto = adminFaqService.updateFaq(requestDto);
 
@@ -76,11 +71,10 @@ public class AdminFaqController {
     @DeleteMapping("/{faqId}")
     public ResponseEntity<Void> deleteFaq(@RequestHeader("TICH-TOKEN") String token,
                                           @PathVariable Long faqId) {
-        if(!adminUserService.adminByToken(token)) throw new NoAccessException("Admin only");
+        if (!adminUserService.adminByToken(token)) throw new NoAccessException("Admin only");
 
         adminFaqService.deleteFaq(faqId);
 
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-
 }

@@ -2,18 +2,16 @@ package mashup.backend.tich.product.controller;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import mashup.backend.tich.exception.NoAccessException;
 import mashup.backend.tich.product.dto.ProductResponseDto;
 import mashup.backend.tich.product.dto.ProductSaveRequestDto;
 import mashup.backend.tich.product.dto.ProductUpdateRequestDto;
 import mashup.backend.tich.product.service.AdminProductService;
-import mashup.backend.tich.user.domain.Role;
-import mashup.backend.tich.user.domain.User;
-import mashup.backend.tich.user.domain.UserRepository;
+import mashup.backend.tich.user.service.AdminUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.NoResultException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -22,14 +20,12 @@ import java.util.List;
 public class AdminProductController {
 
     private final AdminProductService adminProductService;
-    private final UserRepository userRepository; /* 삭제 예정(관리자 확인용) */
+    private final AdminUserService adminUserService;
 
     @ApiOperation("제품 목록 조회")
     @GetMapping
-    public ResponseEntity<List<ProductResponseDto>> showProducts(@RequestHeader String accessToken) {
-        // 임시 코드 : 추후 수정
-        User user = makeTempUser();
-        // ToDo : user check (accessToken)
+    public ResponseEntity<List<ProductResponseDto>> showProducts(@RequestHeader("TICH-TOKEN") String token) {
+        if (!adminUserService.adminByToken(token)) throw new NoAccessException("Admin only");
 
         List<ProductResponseDto> productResponseDto = adminProductService.showProducts();
 
@@ -38,11 +34,9 @@ public class AdminProductController {
 
     @ApiOperation("제품 상세 조회")
     @GetMapping("/{productId}")
-    public ResponseEntity<ProductResponseDto> showProduct(@RequestHeader String accessToken,
+    public ResponseEntity<ProductResponseDto> showProduct(@RequestHeader("TICH-TOKEN") String token,
                                                           @PathVariable Long productId) {
-        // 임시 코드 : 추후 수정
-        User user = makeTempUser();
-        // ToDo : user check (accessToken)
+        if (!adminUserService.adminByToken(token)) throw new NoAccessException("Admin only");
 
         ProductResponseDto productResponseDto = adminProductService.showProduct(productId);
 
@@ -51,11 +45,9 @@ public class AdminProductController {
 
     @ApiOperation("제품 등록")
     @PostMapping
-    public ResponseEntity<ProductResponseDto> saveProduct(@RequestHeader String accessToken,
+    public ResponseEntity<ProductResponseDto> saveProduct(@RequestHeader("TICH-TOKEN") String token,
                                                           @RequestBody ProductSaveRequestDto requestDto) {
-        // 임시 코드 : 추후 수정
-        User user = makeTempUser();
-        // ToDo : user check (accessToken)
+        if (!adminUserService.adminByToken(token)) throw new NoAccessException("Admin only");
 
         // ToDo : image S3에 업로드
 
@@ -66,11 +58,9 @@ public class AdminProductController {
 
     @ApiOperation("제품 수정")
     @PutMapping
-    public ResponseEntity<ProductResponseDto> updateProduct(@RequestHeader String accessToken,
+    public ResponseEntity<ProductResponseDto> updateProduct(@RequestHeader("TICH-TOKEN") String token,
                                                             @RequestBody ProductUpdateRequestDto requestDto) {
-        // 임시 코드 : 추후 수정
-        User user = makeTempUser();
-        // ToDo : user check (accessToken)
+        if (!adminUserService.adminByToken(token)) throw new NoAccessException("Admin only");
 
         // ToDo : image 변경 확인 후 S3에 업로드 or 삭제
 
@@ -81,33 +71,14 @@ public class AdminProductController {
 
     @ApiOperation("제품 삭제")
     @DeleteMapping("/{productId}")
-    public ResponseEntity<Void> deleteProduct(@RequestHeader String accessToken,
+    public ResponseEntity<Void> deleteProduct(@RequestHeader("TICH-TOKEN") String token,
                                               @PathVariable Long productId) {
-        // 임시 코드 : 추후 수정
-        User user = makeTempUser();
-        // ToDo : user check (accessToken)
+        if (!adminUserService.adminByToken(token)) throw new NoAccessException("Admin only");
 
         // ToDo : S3에 업로드된 image 삭제
 
         adminProductService.deleteProduct(productId);
 
         return ResponseEntity.status(HttpStatus.OK).build();
-    }
-
-    /* 임시 코드 : 삭제 예정 */
-    private User makeTempUser() {
-        User user;
-        try {
-            user = userRepository.findByEmail("admin")
-                    .orElseThrow(() -> new NoResultException());
-        } catch (NoResultException e) {
-            user = userRepository.save(User.builder()
-                    .name("관리자")
-                    .email("admin")
-                    .picture("temp")
-                    .role(Role.ADMIN)
-                    .build());
-        }
-        return user;
     }
 }

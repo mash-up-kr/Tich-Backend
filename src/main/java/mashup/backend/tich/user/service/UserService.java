@@ -1,9 +1,9 @@
 package mashup.backend.tich.user.service;
 
 import lombok.RequiredArgsConstructor;
+import mashup.backend.tich.device.service.DeviceService;
 import mashup.backend.tich.exception.DuplicateException;
 import mashup.backend.tich.exception.InvalidTokendException;
-import mashup.backend.tich.device.service.DeviceService;
 import mashup.backend.tich.jwt.JwtProvider;
 import mashup.backend.tich.user.domain.User;
 import mashup.backend.tich.user.domain.UserRepository;
@@ -82,5 +82,4 @@ public class UserService implements UserDetailsService {
 //        String token = jwtProvider.createToken(String.valueOf(user.getId()));
 //        return new SignInResponseDto(user.getId(), token, user.getName());
 //    }
-
 }

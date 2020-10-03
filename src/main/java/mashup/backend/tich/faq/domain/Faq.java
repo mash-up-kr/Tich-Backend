@@ -33,6 +33,7 @@ public class Faq extends BaseTimeEntity {
     public Faq update(String question, String answer) {
         this.question = question;
         this.answer = answer;
+
         return this;
     }
 }

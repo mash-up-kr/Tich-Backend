@@ -55,6 +55,7 @@ public class Product extends BaseTimeEntity {
         this.imageUrl = imageUrl;
         this.price = price;
         this.category = category;
+
         return this;
     }
 }
