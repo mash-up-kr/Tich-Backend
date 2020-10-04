@@ -24,6 +24,7 @@ public class AdminFaqController {
     private final AdminUserService adminUserService;
     private final FaqService faqService;
 
+
     @ApiOperation("FAQ 목록 조회")
     @GetMapping
     public ResponseEntity<List<FaqResponseDto>> showFaqs(@RequestHeader("TICH-TOKEN") String token) {
