@@ -43,6 +43,8 @@ dependencies {
     runtime 'io.jsonwebtoken:jjwt-impl:0.10.7'
     runtime 'io.jsonwebtoken:jjwt-jackson:0.10.7'
 
+    implementation 'com.google.firebase:firebase-admin:6.8.1'
+
     testImplementation('org.springframework.boot:spring-boot-starter-test')
     testImplementation('org.springframework.security:spring-security-test')
 }
