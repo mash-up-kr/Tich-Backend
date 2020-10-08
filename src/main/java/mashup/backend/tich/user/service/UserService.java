@@ -1,12 +1,10 @@
 package mashup.backend.tich.user.service;
 
 import lombok.RequiredArgsConstructor;
-import mashup.backend.tich.exception.*;
-import mashup.backend.tich.exception.DuplicateException;
-import mashup.backend.tich.exception.InvalidTokendException;
 import mashup.backend.tich.device.service.DeviceService;
 import mashup.backend.tich.exception.DuplicateException;
 import mashup.backend.tich.exception.InvalidTokendException;
+import mashup.backend.tich.exception.UserDoseNotExistException;
 import mashup.backend.tich.jwt.JwtProvider;
 import mashup.backend.tich.user.domain.User;
 import mashup.backend.tich.user.domain.UserRepository;
@@ -19,8 +17,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
-
 @RequiredArgsConstructor
 @Service
 public class UserService implements UserDetailsService {
@@ -31,7 +27,7 @@ public class UserService implements UserDetailsService {
     @Autowired
     private JwtProvider jwtProvider;
 
-    public SignUpResponseDto signUp(SignUpRequestDto signUpRequestDto) throws Exception {
+    public SignUpResponseDto signUp(SignUpRequestDto signUpRequestDto) {
         if ("".equals(signUpRequestDto.getToken().trim())) {
             throw new InvalidTokendException("Empty token");
         }
@@ -54,7 +50,6 @@ public class UserService implements UserDetailsService {
         return org.springframework.security.core.userdetails.User.builder().username(id).password("").roles("").build();
     }
 
-    // 이 부분도 바꿔둠
     public SignInResponseDto loginByToken(String token) {
         if (jwtProvider.validateToken(token)) {
             User user = userRepository.findById(Long.valueOf(jwtProvider.getUserPk(token))).orElseThrow(UserDoseNotExistException::new);

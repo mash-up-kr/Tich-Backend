@@ -13,13 +13,13 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class FcmNotificationService implements NotificationService {
-
     private Logger logger = LoggerFactory.getLogger(FcmNotificationService.class);
     private final FirebaseApp firebaseApp;
 
     @Override
     public void send(List<String> tokens, String title, String body) throws FirebaseMessagingException {
         Notification notification = new Notification(title, body);
+
         MulticastMessage message = MulticastMessage.builder()
                 .setNotification(notification)
                 .putData("title", title)
@@ -28,6 +28,7 @@ public class FcmNotificationService implements NotificationService {
                 .build();
 
         BatchResponse response = FirebaseMessaging.getInstance(firebaseApp).sendMulticast(message);
+
         if (response.getFailureCount() > 0) {
             List<SendResponse> responses = response.getResponses();
             List<String> failedTokens = new ArrayList<String>();

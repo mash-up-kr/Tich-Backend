@@ -12,12 +12,13 @@ import java.io.IOException;
 @Configuration
 public class FcmConfig {
 
-   private static final String FIREBASE_CONFIG_PATH = "tich-firebase-adminsdk.json";
+    private static final String FIREBASE_CONFIG_PATH = "tich-firebase-adminsdk.json";
 
     @Bean
     public FirebaseApp tichFirebaseApp() throws IOException {
         FirebaseOptions options = new FirebaseOptions.Builder()
-                .setCredentials(GoogleCredentials.fromStream(new ClassPathResource(FIREBASE_CONFIG_PATH).getInputStream())).build();
+                .setCredentials(GoogleCredentials.fromStream(new ClassPathResource(FIREBASE_CONFIG_PATH).getInputStream()))
+                .build();
 
         return FirebaseApp.initializeApp(options, "Tich");
     }

@@ -8,5 +8,5 @@ import java.util.List;
 interface NotificationService {
 
     @Async("pushSenderThreadPool")
-    public void send(List<String> tokens, String title, String body) throws FirebaseMessagingException;
+    void send(List<String> tokens, String title, String body) throws FirebaseMessagingException;
 }

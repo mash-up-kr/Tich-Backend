@@ -7,6 +7,7 @@ import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import mashup.backend.tich.device.service.DeviceService;
 import mashup.backend.tich.exception.CanNotSendMessageException;
 import mashup.backend.tich.item.service.ItemCycleService;
 import mashup.backend.tich.user.domain.User;
@@ -22,6 +23,7 @@ public class FcmTestService {
     private final FirebaseApp firebaseApp;
     private final UserService userService;
     private final ItemCycleService itemCycleService;
+    private final DeviceService deviceService;
 
     @Transactional
     public void send(String token) {
@@ -31,6 +33,7 @@ public class FcmTestService {
                 .setNotification(new Notification("test title", "test body"))
                 .putData("title", "test title")
                 .putData("body", "test body")
+//                .setToken(deviceService.findDevicesToken(user).get(0))
                 .setToken(itemCycleService.getTokens(user).get(0))
                 .build();
         try {

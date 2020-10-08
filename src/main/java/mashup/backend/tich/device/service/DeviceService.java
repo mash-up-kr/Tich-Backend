@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -24,6 +25,15 @@ public class DeviceService {
         List<Device> devices = deviceRepository.findAllByUserId(user.getId());
 
         return DeviceResponseDto.listOf(devices);
+    }
+
+    @Transactional(readOnly = true)
+    public List<String> findDevicesToken(User user) {
+        List<Device> devices = deviceRepository.findAllByUserId(user.getId());
+
+        return devices.stream()
+                .map(Device::getToken)
+                .collect(Collectors.toList());
     }
 
     public List<Device> createDevice() {
