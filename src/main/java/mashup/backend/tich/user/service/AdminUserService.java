@@ -1,6 +1,7 @@
 package mashup.backend.tich.user.service;
 
 import lombok.RequiredArgsConstructor;
+import mashup.backend.tich.exception.UserDoseNotExistException;
 import mashup.backend.tich.jwt.JwtProvider;
 import mashup.backend.tich.user.domain.User;
 import mashup.backend.tich.user.domain.UserRepository;
@@ -28,9 +29,9 @@ public class AdminUserService {
     }
 
     public boolean adminByToken(String token) {
-        User user = userRepository.getOne(Long.valueOf(jwtProvider.getUserPk(token)));
+        User user = userRepository.findById(Long.valueOf(jwtProvider.getUserPk(token))).orElseThrow(UserDoseNotExistException::new);
 
-        if(user != null && user.getRoleKey().equals("ROLE_ADMIN")) return true;
+        if (user != null && user.getRoleKey().equals("ROLE_ADMIN")) return true;
         return false;
     }
 }

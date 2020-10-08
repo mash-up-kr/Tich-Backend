@@ -12,6 +12,7 @@ import mashup.backend.tich.item.service.ItemCycleService;
 import mashup.backend.tich.user.domain.User;
 import mashup.backend.tich.user.service.UserService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +23,7 @@ public class FcmTestService {
     private final UserService userService;
     private final ItemCycleService itemCycleService;
 
+    @Transactional
     public void send(String token) {
        User user = userService.findUserByToken(token);
 
@@ -29,14 +31,13 @@ public class FcmTestService {
                 .setNotification(new Notification("test title", "test body"))
                 .putData("title", "test title")
                 .putData("body", "test body")
-                .putData("type", "test type")
                 .setToken(itemCycleService.getTokens(user).get(0))
                 .build();
         try {
             FirebaseMessaging.getInstance(firebaseApp).send(message);
         } catch (FirebaseMessagingException e) {
-            log.error("Fcm Send Error - userId" + user.getId());
-            log.error("Fcm Send Error - token" + token);
+            log.error("Fcm Send Error - userId " + user.getId());
+            log.error("Fcm Send Error - token " + token);
             throw new CanNotSendMessageException();
         }
     }

@@ -19,7 +19,7 @@ public class PushService {
     private final ItemRepository itemRepository;
     private final ItemCycleService itemCycleService;
 
-    private final int MAX_SIZE = 500;
+    private final int MAX_SIZE = 1; // 500
 
     private String TITLE = "TICH";
     private String TEXT = "교체일 입니다!";
@@ -33,11 +33,14 @@ public class PushService {
             if (item.getScheduledDate().equals(now)) {
                 // 사용자 찾아서 token 값으로 push 알림 보내기
                 tokens.addAll(itemCycleService.getTokens(item.getUser()));
-                if(tokens.size() == MAX_SIZE){
+                if(tokens.size() == MAX_SIZE){ // 의심
                     notificationService.send(tokens, TITLE, TEXT);
                     tokens.clear();
                 }
+//                tokens.addAll(itemCycleService.getTokens(item.getUser()));
             }
         }
+//        if(tokens.size() > 0)
+//            notificationService.send(tokens, TITLE, TEXT);
     }
 }

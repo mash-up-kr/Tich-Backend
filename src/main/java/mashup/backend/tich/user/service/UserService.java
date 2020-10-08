@@ -1,6 +1,7 @@
 package mashup.backend.tich.user.service;
 
 import lombok.RequiredArgsConstructor;
+import mashup.backend.tich.exception.*;
 import mashup.backend.tich.exception.DuplicateException;
 import mashup.backend.tich.exception.InvalidTokendException;
 import mashup.backend.tich.device.service.DeviceService;
@@ -17,6 +18,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -44,16 +47,17 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
-        User user = userRepository.getOne(Long.valueOf(id));
+        User user = userRepository.findById(Long.valueOf(id)).orElseThrow(UserDoseNotExistException::new);
         if (!user.getId().equals(Long.valueOf(id))) {
             throw new UsernameNotFoundException("Invalid Request");
         }
         return org.springframework.security.core.userdetails.User.builder().username(id).password("").roles("").build();
     }
 
+    // 이 부분도 바꿔둠
     public SignInResponseDto loginByToken(String token) {
         if (jwtProvider.validateToken(token)) {
-            User user = userRepository.getOne(Long.valueOf(jwtProvider.getUserPk(token)));
+            User user = userRepository.findById(Long.valueOf(jwtProvider.getUserPk(token))).orElseThrow(UserDoseNotExistException::new);
             return new SignInResponseDto(user.getId(), token, user.getName());
         } else {
             throw new InvalidTokendException("Expired Token");
@@ -61,12 +65,12 @@ public class UserService implements UserDetailsService {
     }
 
     public User findUserByToken(String token) {
-        return userRepository.getOne(Long.valueOf(jwtProvider.getUserPk(token)));
+        return userRepository.findById(Long.valueOf(jwtProvider.getUserPk(token))).orElseThrow(UserDoseNotExistException::new);
     }
 
     public String withdraw(String token) {
         if (jwtProvider.validateToken(token)) {
-            User user = userRepository.getOne(Long.valueOf(jwtProvider.getUserPk(token)));
+            User user = userRepository.findById(Long.valueOf(jwtProvider.getUserPk(token))).orElseThrow(UserDoseNotExistException::new);
             deviceService.deleteDevices(user);
             userRepository.delete(user);
 
@@ -76,12 +80,14 @@ public class UserService implements UserDetailsService {
         }
     }
 
-//    public SignInResponseDto loginByOauth(SignInRequestDto signInRequestDto) throws Exception {
-//        User user = userRepository.findByEmail(signInRequestDto.)
-//        if(user == null){
-//            throw new Exception("need to sign up");
-//        }
-//        String token = jwtProvider.createToken(String.valueOf(user.getId()));
-//        return new SignInResponseDto(user.getId(), token, user.getName());
-//    }
+    /*
+    public SignInResponseDto loginByOauth(SignInRequestDto signInRequestDto) throws Exception {
+        User user = userRepository.findByEmail(signInRequestDto.)
+        if(user == null){
+            throw new Exception("need to sign up");
+        }
+        String token = jwtProvider.createToken(String.valueOf(user.getId()));
+        return new SignInResponseDto(user.getId(), token, user.getName());
+    }
+    */
 }
