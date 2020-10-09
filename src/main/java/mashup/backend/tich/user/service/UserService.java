@@ -1,9 +1,9 @@
 package mashup.backend.tich.user.service;
 
 import lombok.RequiredArgsConstructor;
-import mashup.backend.tich.device.service.DeviceService;
 import mashup.backend.tich.exception.DuplicateException;
 import mashup.backend.tich.exception.InvalidTokendException;
+import mashup.backend.tich.device.service.DeviceService;
 import mashup.backend.tich.exception.UserDoseNotExistException;
 import mashup.backend.tich.jwt.JwtProvider;
 import mashup.backend.tich.user.domain.User;
@@ -50,6 +50,7 @@ public class UserService implements UserDetailsService {
         return org.springframework.security.core.userdetails.User.builder().username(id).password("").roles("").build();
     }
 
+    // 이 부분도 바꿔둠
     public SignInResponseDto loginByToken(String token) {
         if (jwtProvider.validateToken(token)) {
             User user = userRepository.findById(Long.valueOf(jwtProvider.getUserPk(token))).orElseThrow(UserDoseNotExistException::new);

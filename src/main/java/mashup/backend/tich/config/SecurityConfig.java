@@ -17,7 +17,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final JwtProvider jwtProvider;
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(WebSecurity web) {
         web.ignoring().antMatchers("/api/users/sign-up", "/api/users/sign-in", "/h2-console/**", "/error",
                 "/v2/api-docs",
                 "/configuration/ui",
@@ -33,7 +33,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().and().csrf().disable()
                 .headers().frameOptions().disable() // h2-console 화면 사용
                 .and().formLogin().disable()
-                .authorizeRequests().anyRequest().authenticated()
+                .authorizeRequests()
+                .antMatchers("/api/users/sign-up", "/api/users/sign-in").permitAll()
+                .anyRequest().authenticated()
                 .and() // 세션이 없다.
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()

@@ -38,5 +38,7 @@ public class PushService {
                 tokens = new ArrayList<>();
             }
         }
+//        if(tokens.size() > 0)
+//            notificationService.send(tokens, TITLE, TEXT);
     }
 }
