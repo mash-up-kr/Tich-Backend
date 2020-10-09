@@ -14,8 +14,8 @@ public class Scheduler {
 
     private final PushController pushController;
 
-//    @Scheduled(cron = "0 0 8 * * *") // 매일 8시마다
-    @Scheduled(fixedDelay = 3000) // 30초 마다 호출
+//    @Scheduled(fixedDelay = 6000) // 60초 마다 호출
+    @Scheduled(cron = "0 0 8 * * *") // 매일 8시마다
     public void itemJobSch() throws FirebaseMessagingException {
         pushController.sendItemPushAlarm(LocalDate.now());
     }
