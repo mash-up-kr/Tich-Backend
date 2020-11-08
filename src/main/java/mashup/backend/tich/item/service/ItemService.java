@@ -98,13 +98,22 @@ public class ItemService {
     }
 
     @Transactional
+    public void deleteItems(User user) {
+        List<Item> items = itemRepository.findAllByUserId(user.getId());
+
+        for (Item item : items) {
+            historyService.deleteHistory(user, item);
+            itemRepository.delete(item);
+        }
+    }
+
+    @Transactional
     public void deleteItem(User user, Long itemId) {
         Item item = findItemById(itemId);
 
         if (!item.isOwner(user)) throw new NoAccessException();
 
         historyService.deleteHistory(user, item);
-
         itemRepository.delete(item);
     }
 

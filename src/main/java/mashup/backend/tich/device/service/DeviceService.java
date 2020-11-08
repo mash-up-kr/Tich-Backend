@@ -5,7 +5,6 @@ import mashup.backend.tich.device.domain.Device;
 import mashup.backend.tich.device.domain.DeviceRepository;
 import mashup.backend.tich.device.dto.DeviceResponseDto;
 import mashup.backend.tich.device.dto.DeviceSaveRequestDto;
-import mashup.backend.tich.exception.DeviceDoseNotExistException;
 import mashup.backend.tich.user.domain.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,9 +60,9 @@ public class DeviceService {
 
     @Transactional
     public void deleteDevices(User user) {
-        if (!deviceRepository.existsAllByUserId(user.getId())) throw new DeviceDoseNotExistException();
-
-        deviceRepository.deleteAllByUser(user);
+        if (deviceRepository.existsAllByUserId(user.getId())) {
+            deviceRepository.deleteAllByUser(user);
+        }
     }
 
     private boolean isDuplicateToken(Device device) {

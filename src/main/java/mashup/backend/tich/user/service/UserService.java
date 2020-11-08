@@ -5,6 +5,7 @@ import mashup.backend.tich.device.service.DeviceService;
 import mashup.backend.tich.exception.DuplicateException;
 import mashup.backend.tich.exception.InvalidTokendException;
 import mashup.backend.tich.exception.UserDoseNotExistException;
+import mashup.backend.tich.item.service.ItemService;
 import mashup.backend.tich.jwt.JwtProvider;
 import mashup.backend.tich.user.domain.User;
 import mashup.backend.tich.user.domain.UserRepository;
@@ -23,6 +24,7 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final DeviceService deviceService;
+    private final ItemService itemService;
 
     @Autowired
     private JwtProvider jwtProvider;
@@ -73,8 +75,8 @@ public class UserService implements UserDetailsService {
         if (jwtProvider.validateToken(token)) {
             User user = userRepository.findById(Long.valueOf(jwtProvider.getUserPk(token))).orElseThrow(UserDoseNotExistException::new);
             deviceService.deleteDevices(user);
+            itemService.deleteItems(user);
             userRepository.delete(user);
-
             return "delete success";
         } else {
             throw new InvalidTokendException("Expired Token");

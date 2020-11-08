@@ -51,10 +51,6 @@ public class UserController {
     @ApiOperation("탈퇴")
     @DeleteMapping("/withdraw")
     public ResponseEntity<?> withdraw(@RequestHeader("TICH-TOKEN") String token) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(userService.withdraw(token));
-        } catch (Exception e) {
-            throw new InvalidTokendException(e.toString());
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(userService.withdraw(token));
     }
 }
