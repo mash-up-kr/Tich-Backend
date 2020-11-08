@@ -33,6 +33,7 @@ public class FcmTestService {
                 .setNotification(new Notification("test title", "test body"))
                 .putData("title", "test title")
                 .putData("body", "test body")
+//                .setToken(deviceService.findDevicesToken(user).get(0))
                 .setToken(itemCycleService.getTokens(user).get(0))
                 .build();
         try {

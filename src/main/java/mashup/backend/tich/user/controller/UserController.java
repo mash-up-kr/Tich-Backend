@@ -2,6 +2,7 @@ package mashup.backend.tich.user.controller;
 
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import mashup.backend.tich.exception.DuplicateException;
 import mashup.backend.tich.exception.FailToSignUp;
 import mashup.backend.tich.exception.InvalidTokendException;
 import mashup.backend.tich.user.dto.SignUpRequestDto;
@@ -22,6 +23,8 @@ public class UserController {
     public ResponseEntity<?> signUp(@RequestBody SignUpRequestDto signUpRequestDto) {
         try {
             return ResponseEntity.status(HttpStatus.OK).body(userService.signUp(signUpRequestDto));
+        } catch (DuplicateException e) {
+            return ResponseEntity.status(HttpStatus.OK).body(userService.loginWithoutToken(signUpRequestDto.getEmail()));
         } catch (Exception e) {
             throw new FailToSignUp(e.toString());
         }
